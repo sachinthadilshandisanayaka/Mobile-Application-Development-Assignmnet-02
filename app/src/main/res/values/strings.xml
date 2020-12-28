@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MobileLectureAssigment_02</string>
+    <string name="input_text">Enter text here</string>
+    <string name="show_text">Display</string>
 </resources>
