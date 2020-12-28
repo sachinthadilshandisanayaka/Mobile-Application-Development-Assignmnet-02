@@ -1,6 +1,7 @@
 <resources>
-    <string name="app_name">MobileLectureAssigment_02</string>
+    <string name="app_name">MobileLectureAssignment_02</string>
     <string name="input_text">Enter text here</string>
     <string name="show_text">Display</string>
     <string name="shared_preference_save">Save SP</string>
+    <string name="shared_preference_show">Show SP</string>
 </resources>
