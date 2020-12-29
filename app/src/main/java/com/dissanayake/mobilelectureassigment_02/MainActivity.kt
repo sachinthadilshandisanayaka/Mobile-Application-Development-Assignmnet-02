@@ -11,9 +11,7 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import com.google.android.material.snackbar.Snackbar
-import java.io.File
-import java.io.FileNotFoundException
-import java.io.FileOutputStream
+import java.io.*
 import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
@@ -39,7 +37,6 @@ class MainActivity : AppCompatActivity() {
             val editor = sharedPreferences!!.edit()
             editor.putString(KEY_VALUE, textValue)
             editor.commit()
-            showToast("Clicked")
             showSnackBar(textValue, it)
         }
         findViewById<Button>(R.id.button7).setOnClickListener {
@@ -49,7 +46,7 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.button5).setOnClickListener {
             externalFile = File(getExternalFilesDir(FILE_PATH), FILE_NAME)
-            var editText = findViewById<EditText>(R.id.editTextTextPersonName).text.toString()
+            val editText = findViewById<EditText>(R.id.editTextTextPersonName).text.toString()
             try{
                 fileOutputStream = FileOutputStream(externalFile)
                 try {
@@ -63,11 +60,29 @@ class MainActivity : AppCompatActivity() {
                 Log.i("Error 02:", e.toString())
             }
         }
+        findViewById<Button>(R.id.button8).setOnClickListener {
+            externalFile = File(getExternalFilesDir(FILE_PATH), FILE_NAME)
+            var fileInputStream = FileInputStream(externalFile)
+            var inputStreamReader: InputStreamReader = InputStreamReader(fileInputStream)
+            val bufferedReader: BufferedReader = BufferedReader(inputStreamReader)
+            val stringBuilder: StringBuilder = java.lang.StringBuilder()
+            var text: String? = null
+            while ({text = bufferedReader.readLine()}!= null) {
+                stringBuilder.append(text)
+                    }
+            fileInputStream.close()
+            if(text != null) {
+                showToast("Done")
+                findViewById<TextView>(R.id.textView).text = text
+            } else {
+                showToast("External Storage has no data")
+            }
+        }
     }
 private fun showToast(text: String) {
-    Toast.makeText(this, "Clicked", Toast.LENGTH_SHORT ).show()
+    Toast.makeText(this, text, Toast.LENGTH_SHORT ).show()
     }
-private fun showSnackBar(text: String, view: View) {
+private fun showSnackBar(text: String?, view: View) {
     Snackbar.make(view, "Saved $text", Snackbar.LENGTH_LONG)
             .setAction("Action", null).show()
 }
