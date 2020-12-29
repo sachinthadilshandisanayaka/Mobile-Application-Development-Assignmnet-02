@@ -20,8 +20,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         sharedPreferences = getSharedPreferences(MyPREFERENCE, Context.MODE_PRIVATE)
-        val getString = sharedPreferences?.getString(KEY_VALUE, "Default Value")
-        findViewById<TextView>(R.id.textView).text = getString
 
         findViewById<Button>(R.id.button4).setOnClickListener {
 
@@ -30,8 +28,12 @@ class MainActivity : AppCompatActivity() {
             editor.putString(KEY_VALUE, textValue)
             editor.commit()
 
-            Snackbar.make(it, textValue, Snackbar.LENGTH_LONG)
+            Snackbar.make(it, "Saved $textValue", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
+        }
+        findViewById<Button>(R.id.button7).setOnClickListener {
+            val getString = sharedPreferences?.getString(KEY_VALUE, "Default Value")
+            findViewById<TextView>(R.id.textView).text = getString
         }
     }
 }
