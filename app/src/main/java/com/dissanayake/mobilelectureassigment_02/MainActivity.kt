@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -39,8 +40,7 @@ class MainActivity : AppCompatActivity() {
             editor.putString(KEY_VALUE, textValue)
             editor.commit()
             showToast("Clicked")
-            Snackbar.make(it, "Saved $textValue", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+            showSnackBar(textValue, it)
         }
         findViewById<Button>(R.id.button7).setOnClickListener {
             val getString = sharedPreferences?.getString(KEY_VALUE, "Default Value")
@@ -55,6 +55,7 @@ class MainActivity : AppCompatActivity() {
                 try {
                     fileOutputStream!!.write(editText.toByteArray())
                     fileOutputStream!!.close()
+                    showSnackBar("Date", it)
                 } catch (e: Exception) {
                     Log.i("Error 01:", e.toString())
                 }
@@ -66,6 +67,10 @@ class MainActivity : AppCompatActivity() {
 private fun showToast(text: String) {
     Toast.makeText(this, "Clicked", Toast.LENGTH_SHORT ).show()
     }
+private fun showSnackBar(text: String, view: View) {
+    Snackbar.make(view, "Saved $text", Snackbar.LENGTH_LONG)
+            .setAction("Action", null).show()
+}
 }
 
 
