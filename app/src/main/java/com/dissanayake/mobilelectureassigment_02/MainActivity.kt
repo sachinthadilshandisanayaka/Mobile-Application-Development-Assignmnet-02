@@ -85,6 +85,9 @@ class MainActivity : AppCompatActivity() {
                 showToast("Done")
                 findViewById<TextView>(R.id.textView).text = text
         }
+        if (!isExternalStorageAvailable || isExternalStorageReadOnly) {
+            findViewById<Button>(R.id.button5).isEnabled = false
+        }
     }
 private fun showToast(text: String) {
     Toast.makeText(this, text, Toast.LENGTH_SHORT ).show()
