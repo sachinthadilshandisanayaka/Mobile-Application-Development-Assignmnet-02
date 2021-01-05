@@ -21,8 +21,8 @@ class MainActivity : AppCompatActivity() {
     val KEY_VALUE = "KEY_VALUE"
 
     var fileOutputStream: FileOutputStream? = null
-    private val FILE_PATH = "src/main/resourses"
-    private val FILE_NAME = "text.txt"
+//    private val FILE_PATH = "C:\\Users\\sachi dissanayake\\Desktop\\New folder"
+    private val FILE_NAME = "test.txt"
     var externalFile: File? = null
     var sharedPreferences: SharedPreferences? = null
 
@@ -55,11 +55,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.button5).setOnClickListener {
-            externalFile = File(getExternalFilesDir(FILE_PATH), FILE_NAME)
             val editText = findViewById<EditText>(R.id.editTextTextPersonName).text.toString()
+            Log.i("Message to Editor 01: ", editText)
             try{
-                val fileOutputStream = FileOutputStream(externalFile)
+                val fileOutputStream: FileOutputStream
                 try {
+                    fileOutputStream = openFileOutput(FILE_NAME, Context.MODE_PRIVATE)
                     fileOutputStream.write(editText.toByteArray())
                     fileOutputStream.close()
                     showSnackBar("Data", it)
@@ -71,19 +72,23 @@ class MainActivity : AppCompatActivity() {
             }
         }
         findViewById<Button>(R.id.button8).setOnClickListener {
-            externalFile = File(getExternalFilesDir(FILE_PATH), FILE_NAME)
-            var fileInputStream = FileInputStream(externalFile)
-            var inputStreamReader: InputStreamReader = InputStreamReader(fileInputStream)
-            val bufferedReader: BufferedReader = BufferedReader(inputStreamReader)
-            val stringBuilder: StringBuilder = StringBuilder()
-            var text: String? = null
-            while (bufferedReader.readLine() != null) {
-                text = bufferedReader.readLine().toString()
-                stringBuilder.append(text)
-                    }
-            fileInputStream.close()
+            try {
+                var fileInputStream: FileInputStream? = null
+                fileInputStream = openFileInput(FILE_NAME)
+                var inputStreamReader: InputStreamReader = InputStreamReader(fileInputStream)
+                val bufferedReader: BufferedReader = BufferedReader(inputStreamReader)
+                val stringBuilder: StringBuilder = StringBuilder()
+                var text: String? = null
+                while ({ text = bufferedReader.readLine(); text}() != null) {
+                    Log.i("Developer message : ", text.toString())
+                    stringBuilder.append(text)
+                }
+                fileInputStream.close()
                 showToast("Done")
-                findViewById<TextView>(R.id.textView).text = text
+                findViewById<TextView>(R.id.textView).text = stringBuilder.toString()
+            } catch (e:Exception) {
+                Log.i("Error 03: ", e.toString())
+            }
         }
         if (!isExternalStorageAvailable || isExternalStorageReadOnly) {
             findViewById<Button>(R.id.button5).isEnabled = false
